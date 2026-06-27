@@ -1,0 +1,29 @@
+
+You are Claude Code. Improve this existing Streamlit project "Athlete OS v2".
+
+Architecture:
+- app.py routes to modular pages.
+- athlete_os/config.py contains dimensions and constants.
+- athlete_os/storage.py handles CSV persistence.
+- athlete_os/scoring.py computes recovery, knee status, and dimension levels.
+- athlete_os/seed.py contains default exercise library.
+- athlete_os/pages/*.py are Streamlit pages.
+
+Goal:
+A serious persistent athletic dashboard for Fabrice:
+- chronic patellar tendon irritation, stairs can hurt.
+- wants to heal fast but still train upper body, rings, core, flexibility, splits, bridge, hips, wrists, ankles.
+- logs pain/sleep/stress and daily exercises/courses.
+- each exercise affects dimensions like knee health, tendons, wrists, ankles, hips, shoulder flexibility, core, rings, etc.
+- persistent CSV data in data/.
+- radar/star chart of dimension levels from -1 to 5.
+- decision logic: RED/ORANGE/GREEN knee status from pain logs.
+- do not minimize physio.
+
+Next improvements:
+1. Add editable/deletable exercises.
+2. Add multi-exercise session logging.
+3. Add weekly plan calendar view.
+4. Add true historical dimension snapshots.
+5. Add export/import backup zip.
+6. Add pain rules per exercise: recommend skipping exercises if current knee status is RED or required phase is above current knee phase.
