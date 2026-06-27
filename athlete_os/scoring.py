@@ -6,7 +6,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from Athlete_OS.athlete_os.config import DIMENSION_IDS, DIMENSION_NAMES, EFFECT_COLUMNS
+from athlete_os.config import DIMENSION_IDS, DIMENSION_NAMES, EFFECT_COLUMNS
 
 
 def clamp(x, lo, hi):

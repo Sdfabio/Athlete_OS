@@ -2,8 +2,8 @@
 import pandas as pd
 import streamlit as st
 
-from Athlete_OS.athlete_os.config import CATEGORIES, DIMENSIONS, EFFECT_COLUMNS
-from Athlete_OS.athlete_os.storage import add_exercise, load_exercises
+from athlete_os.config import CATEGORIES, DIMENSIONS, EFFECT_COLUMNS
+from athlete_os.storage import add_exercise, load_exercises
 
 
 def render():

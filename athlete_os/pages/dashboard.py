@@ -2,15 +2,15 @@
 import plotly.graph_objects as go
 import streamlit as st
 
-from Athlete_OS.athlete_os.config import DIMENSION_IDS, DIMENSION_NAMES
-from Athlete_OS.athlete_os.scoring import (
+from athlete_os.config import DIMENSION_IDS, DIMENSION_NAMES
+from athlete_os.scoring import (
     daily_recommendations,
     dimension_scores,
     knee_status_from_latest,
     readiness_emoji,
     recovery_score,
 )
-from Athlete_OS.athlete_os.storage import load_baselines, load_training, load_wellness, save_baselines
+from athlete_os.storage import load_baselines, load_training, load_wellness, save_baselines
 
 
 def radar_chart(scores_df):

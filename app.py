@@ -1,9 +1,9 @@
 
 import streamlit as st
 
-from Athlete_OS.athlete_os.pages import dashboard, exercise_library, history, log
-from Athlete_OS.athlete_os.storage import ensure_data_files
-from Athlete_OS.athlete_os.pages import program
+from athlete_os.pages import dashboard, exercise_library, history, log
+from athlete_os.storage import ensure_data_files
+from athlete_os.pages import program
 
 st.set_page_config(page_title="Athlete OS v2", layout="wide")
 

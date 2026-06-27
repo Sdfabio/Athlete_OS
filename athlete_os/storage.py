@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from Athlete_OS.athlete_os.config import DATA_DIR, DIMENSIONS, EFFECT_COLUMNS
-from Athlete_OS.athlete_os.seed import DEFAULT_EXERCISES
+from athlete_os.config import DATA_DIR, DIMENSIONS, EFFECT_COLUMNS
+from athlete_os.seed import DEFAULT_EXERCISES
 
 WELLNESS_COLUMNS = [
     "date",

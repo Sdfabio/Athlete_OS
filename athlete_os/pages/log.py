@@ -4,8 +4,8 @@ from datetime import date
 import pandas as pd
 import streamlit as st
 
-from Athlete_OS.athlete_os.config import EFFECT_COLUMNS
-from Athlete_OS.athlete_os.storage import (
+from athlete_os.config import EFFECT_COLUMNS
+from athlete_os.storage import (
     append_training_entry,
     load_exercises,
     load_training,

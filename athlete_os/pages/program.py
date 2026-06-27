@@ -2,8 +2,8 @@
 import pandas as pd
 import streamlit as st
 
-from Athlete_OS.athlete_os.scoring import knee_status_from_latest
-from Athlete_OS.athlete_os.storage import load_wellness
+from athlete_os.scoring import knee_status_from_latest
+from athlete_os.storage import load_wellness
 
 WEEKLY_SCHEDULE = pd.DataFrame([
     ["Lundi", "Bureau 8h30-16h30", "17h-18h Équilibre", "19h-20h option : Rings / Flexibilité / Physio longue", "Meilleur jour haut du corps + poignets."],

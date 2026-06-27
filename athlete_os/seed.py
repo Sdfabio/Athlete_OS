@@ -1,5 +1,5 @@
 
-from Athlete_OS.athlete_os.config import DIMENSION_IDS, EFFECT_COLUMNS
+from athlete_os.config import DIMENSION_IDS, EFFECT_COLUMNS
 
 def blank_effects():
     return {f"effect_{d}": 0.0 for d in DIMENSION_IDS}

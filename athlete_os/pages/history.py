@@ -3,8 +3,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from Athlete_OS.athlete_os.scoring import dimension_scores, recovery_series
-from Athlete_OS.athlete_os.storage import load_baselines, load_training, load_wellness
+from athlete_os.scoring import dimension_scores, recovery_series
+from athlete_os.storage import load_baselines, load_training, load_wellness
 
 
 def render():
