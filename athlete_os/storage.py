@@ -121,7 +121,10 @@ def load_exercises() -> pd.DataFrame:
 
 
 def load_baselines() -> pd.DataFrame:
-    return read_csv_safe("dimension_baselines.csv", BASELINE_COLUMNS)
+    df = read_csv_safe("dimension_baselines.csv", BASELINE_COLUMNS)
+    if "notes" in df.columns:
+        df["notes"] = df["notes"].fillna("").astype("string")
+    return df
 
 
 def save_wellness_entry(entry: dict) -> None:

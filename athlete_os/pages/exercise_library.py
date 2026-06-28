@@ -1,3 +1,4 @@
+import re
 from datetime import date
 
 import pandas as pd
@@ -5,6 +6,19 @@ import streamlit as st
 
 from athlete_os.config import CATEGORIES, DIMENSIONS, EFFECT_COLUMNS
 from athlete_os.storage import add_exercise, append_training_entry, load_exercises
+
+
+def _default_duration_seconds(default_dose):
+    dose = str(default_dose or "").lower()
+    minutes = re.search(r"(\d+(?:\.\d+)?)\s*(?:-\s*\d+(?:\.\d+)?)?\s*min\b", dose)
+    if minutes:
+        return int(float(minutes.group(1)) * 60)
+
+    seconds = re.search(r"(\d+(?:\.\d+)?)\s*(?:-\s*\d+(?:\.\d+)?)?\s*(?:s|sec)\b", dose)
+    if seconds:
+        return int(float(seconds.group(1)))
+
+    return 0
 
 
 def render():
@@ -38,11 +52,21 @@ def render():
         st.caption(f"Dose par défaut : {ex.get('default_dose', '')} | Catégorie : {ex.get('category', '')}")
 
         with st.form("quick_training_log_form"):
-            col1, col2, col3, col4 = st.columns(4)
-            d = col1.date_input("Date", value=date.today(), key="library_training_date")
-            duration_min = col2.number_input("Durée (min)", min_value=1, max_value=240, value=30)
-            sets = col3.number_input("Sets", min_value=0, max_value=20, value=0)
-            reps = col4.number_input("Reps", min_value=0, max_value=300, value=0)
+            default_seconds = _default_duration_seconds(ex.get("default_dose", ""))
+            if default_seconds:
+                col1, col2, col3, col4, col5 = st.columns(5)
+                d = col1.date_input("Date", value=date.today(), key="library_training_date")
+                minutes = col2.number_input("Minutes", min_value=0, max_value=240, value=default_seconds // 60)
+                seconds = col3.number_input("Secondes", min_value=0, max_value=59, value=default_seconds % 60)
+                sets = col4.number_input("Sets", min_value=0, max_value=20, value=0)
+                reps = col5.number_input("Reps", min_value=0, max_value=300, value=0)
+                duration_min = minutes + (seconds / 60)
+            else:
+                col1, col2, col3 = st.columns(3)
+                d = col1.date_input("Date", value=date.today(), key="library_training_date")
+                sets = col2.number_input("Sets", min_value=0, max_value=20, value=0)
+                reps = col3.number_input("Reps", min_value=0, max_value=300, value=0)
+                duration_min = 0
 
             col5, col6 = st.columns(2)
             intensity = col5.slider("Intensité", 1, 10, int(float(ex.get("default_intensity", 5) or 5)))
