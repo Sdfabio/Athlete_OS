@@ -1,9 +1,10 @@
+from datetime import date
 
 import pandas as pd
 import streamlit as st
 
 from athlete_os.config import CATEGORIES, DIMENSIONS, EFFECT_COLUMNS
-from athlete_os.storage import add_exercise, load_exercises
+from athlete_os.storage import add_exercise, append_training_entry, load_exercises
 
 
 def render():
@@ -13,11 +14,63 @@ def render():
     exercises = load_exercises()
 
     st.subheader("Exercices existants")
+    search = st.text_input("Rechercher un exercice", placeholder="Nom, catégorie, région, but...")
     filters = st.multiselect("Filtrer par catégorie", sorted(exercises["category"].dropna().unique().tolist()))
     view = exercises.copy()
+    if search.strip():
+        query = search.strip().lower()
+        searchable_cols = ["exercise_name", "category", "body_region", "goal", "default_dose"]
+        mask = pd.Series(False, index=view.index)
+        for col in searchable_cols:
+            mask = mask | view[col].astype(str).str.lower().str.contains(query, na=False)
+        view = view[mask]
     if filters:
         view = view[view["category"].isin(filters)]
     st.dataframe(view, use_container_width=True, hide_index=True)
+
+    st.subheader("Logger depuis la bibliothèque")
+    if view.empty:
+        st.info("Aucun exercice ne correspond aux filtres actuels.")
+    else:
+        selected_name = st.selectbox("Exercice à logger", view["exercise_name"].tolist())
+        ex = view[view["exercise_name"] == selected_name].iloc[0].to_dict()
+
+        st.caption(f"Dose par défaut : {ex.get('default_dose', '')} | Catégorie : {ex.get('category', '')}")
+
+        with st.form("quick_training_log_form"):
+            col1, col2, col3, col4 = st.columns(4)
+            d = col1.date_input("Date", value=date.today(), key="library_training_date")
+            duration_min = col2.number_input("Durée (min)", min_value=1, max_value=240, value=30)
+            sets = col3.number_input("Sets", min_value=0, max_value=20, value=0)
+            reps = col4.number_input("Reps", min_value=0, max_value=300, value=0)
+
+            col5, col6 = st.columns(2)
+            intensity = col5.slider("Intensité", 1, 10, int(float(ex.get("default_intensity", 5) or 5)))
+            notes = col6.text_input("Notes", placeholder="Optionnel")
+
+            submitted_log = st.form_submit_button("Logger la séance")
+
+        if submitted_log:
+            entry = {
+                "date": str(d),
+                "exercise_name": ex["exercise_name"],
+                "category": ex["category"],
+                "body_region": ex["body_region"],
+                "duration_min": duration_min,
+                "intensity": intensity,
+                "knee_load": ex.get("knee_load", 0),
+                "wrist_load": ex.get("wrist_load", 0),
+                "ankle_load": ex.get("ankle_load", 0),
+                "sets": sets,
+                "reps": reps,
+                "pain_before": 0,
+                "pain_after": 0,
+                "notes": notes,
+            }
+            for c in EFFECT_COLUMNS:
+                entry[c] = ex.get(c, 0.0)
+            append_training_entry(entry)
+            st.success(f"Exercice loggé : {ex['exercise_name']}")
 
     st.subheader("Ajouter un exercice")
 
